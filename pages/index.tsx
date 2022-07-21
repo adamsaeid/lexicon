@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         <p>{token}</p>
       ) : (
         <SpotifyAuth
-          redirectUri='http://localhost:3001'
+          redirectUri={process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}
           clientID={process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}
           scopes={[Scopes.userReadPrivate, 'user-read-email', 'user-modify-playback-state']}
           onAccessToken={(token: string) => setToken(token)}
