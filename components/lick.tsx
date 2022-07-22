@@ -41,7 +41,8 @@ const Lick = ({token, name, spotifyUri, position, duration} : Props) => {
 
   return(
     <div style={{ display: 'flex' }}>
-      <p>{name}</p><button onClick={onPlay}>Play</button>
+      <button onClick={onPlay}>Play</button>
+      <p>{name}</p>
     </div>
   );
 }
