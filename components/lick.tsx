@@ -1,6 +1,6 @@
 import { usePlayerDevice, useSpotifyPlayer } from "react-spotify-web-playback-sdk";
 
-const Player = ({token} : { token: string }) => {
+const Lick = ({token} : { token: string }) => {
   const device = usePlayerDevice()
   const player = useSpotifyPlayer();
 
@@ -31,4 +31,4 @@ const Player = ({token} : { token: string }) => {
   );
 }
 
-export default Player;
+export default Lick;

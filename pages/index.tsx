@@ -5,7 +5,7 @@ import { SpotifyAuth, Scopes } from 'react-spotify-auth';
 import 'react-spotify-auth/dist/index.css'
 import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
 
-import Player from "../components/player";
+import Lick from "../components/lick";
 
 const Home: NextPage = () => {
   const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
         initialVolume={0.3}
         connectOnInitialized={true}
       >
-        <Player token={token!}/>
+        <Lick token={token!}/>
       </WebPlaybackSDK>
       <SpotifyAuth
         redirectUri={process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}
