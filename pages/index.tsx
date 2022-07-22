@@ -18,7 +18,6 @@ const Home: NextPage = () => {
       <WebPlaybackSDK
         initialDeviceName="lexicon"
         getOAuthToken={getToken}
-        initialVolume={0.3}
         connectOnInitialized={true}
       >
         <Lick 
