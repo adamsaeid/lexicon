@@ -13,6 +13,8 @@ const Home: NextPage = () => {
   
   return (
     <div className='app'>
+      {/* types provided by package are incorrect */}
+      {/* @ts-ignore */}
       <WebPlaybackSDK
         initialDeviceName="lexicon"
         getOAuthToken={getToken}
