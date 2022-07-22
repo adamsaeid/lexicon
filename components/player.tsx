@@ -1,10 +1,11 @@
-import { usePlayerDevice } from "react-spotify-web-playback-sdk";
+import { usePlayerDevice, useSpotifyPlayer } from "react-spotify-web-playback-sdk";
 
 const Player = ({token} : { token: string }) => {
   const device = usePlayerDevice()
+  const player = useSpotifyPlayer();
 
-  const onPlay = () => {
-    fetch(
+  const onPlay = async () => {
+    await fetch(
       `https://api.spotify.com/v1/me/player/play?device_id=${device?.device_id}`,
       {
         method: "PUT",
@@ -18,7 +19,9 @@ const Player = ({token} : { token: string }) => {
           position_ms: 27000,
         })
       }
-    )
+    );
+
+    player?.resume();
   };
 
   return(
