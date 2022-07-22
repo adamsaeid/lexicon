@@ -44,6 +44,7 @@ const Home: NextPage = () => {
       >
         {licks.map(lick => (
           <Lick 
+            key={lick.name}
             token={token!}
             name={lick.name}
             spotifyUri={lick.spotifyUri}
