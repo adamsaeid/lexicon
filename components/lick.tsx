@@ -13,12 +13,12 @@ const Lick = ({token, name, spotifyUri, position, duration} : Props) => {
   const player = useSpotifyPlayer();
 
   const onPlay = async () => {
-    player?.addListener('player_state_changed', () => {
-      player.removeListener('player_state_changed');
-      setTimeout(() => {
-        player.pause();
-      }, duration)
-    });
+    // player?.addListener('player_state_changed', () => {
+    //   player.removeListener('player_state_changed');
+    //   setTimeout(() => {
+    //     player.pause();
+    //   }, duration)
+    // });
 
     await fetch(
       `https://api.spotify.com/v1/me/player/play?device_id=${device?.device_id}`,
