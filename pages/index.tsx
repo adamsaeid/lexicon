@@ -21,7 +21,13 @@ const Home: NextPage = () => {
         initialVolume={0.3}
         connectOnInitialized={true}
       >
-        <Lick token={token!}/>
+        <Lick 
+          token={token!}
+          name="B.B. King - Sweet Little Angel"
+          spotifyUri="spotify:track:6F76ic7c6au3QxG6jaso7N"
+          position={27600}
+          duration={2200}
+        />
       </WebPlaybackSDK>
       <SpotifyAuth
         redirectUri={process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}
