@@ -1,7 +1,7 @@
 import { usePlayerDevice, useSpotifyPlayer } from "react-spotify-web-playback-sdk";
 
 export interface Props {
-  token: string;
+  token?: string;
   lick: Lick;
 }
 

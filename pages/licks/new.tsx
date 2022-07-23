@@ -7,6 +7,8 @@ import 'react-spotify-auth/dist/index.css'
 import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
 import Kitsu from 'kitsu';
 
+import Lick from "../../components/lick";
+
 const Home: NextPage = () => {
   const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
   const getToken = useCallback((callback: any) => callback(token), [token]);
@@ -17,6 +19,13 @@ const Home: NextPage = () => {
   const [duration, setDuration] = useState<string>('');
 
   const router = useRouter();
+
+  const lick={
+    name,
+    'spotify-uri': spotifyUri,
+    position: parseInt(position),
+    duration: parseInt(duration)
+  }
 
   const createLick = async () => {
     await api.create('licks', {
@@ -42,6 +51,7 @@ const Home: NextPage = () => {
         getOAuthToken={getToken}
         connectOnInitialized={true}
       >
+        <Lick token={token} lick={lick} />
         <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '400px' }}>
           <div>
             <label>Name: </label>
@@ -60,10 +70,11 @@ const Home: NextPage = () => {
             <input type="text" onChange={(event) => setDuration(event.target.value)}/>
           </div>
         </div>
+        
         <button onClick={createLick}>Save</button>
       </WebPlaybackSDK>
       <SpotifyAuth
-        redirectUri={process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}
+        redirectUri={`${process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}/licks/new`}
         clientID={process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}
         scopes={[Scopes.userReadPrivate, 'user-read-email', 'user-modify-playback-state', 'streaming']}
         onAccessToken={(token: string) => setToken(token)}
