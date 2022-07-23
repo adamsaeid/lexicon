@@ -2,13 +2,10 @@ import { usePlayerDevice, useSpotifyPlayer } from "react-spotify-web-playback-sd
 
 export interface Props {
   token: string;
-  name: string;
-  spotifyUri: string;
-  position: number;
-  duration: number;
+  lick: Lick;
 }
 
-const Lick = ({token, name, spotifyUri, position, duration} : Props) => {
+const Lick = ({token, lick} : Props) => {
   const device = usePlayerDevice()
   const player = useSpotifyPlayer();
 
@@ -17,7 +14,7 @@ const Lick = ({token, name, spotifyUri, position, duration} : Props) => {
       player.removeListener('player_state_changed');
       setTimeout(() => {
         player.pause();
-      }, duration)
+      }, lick.duration)
     });
 
     await fetch(
@@ -30,8 +27,8 @@ const Lick = ({token, name, spotifyUri, position, duration} : Props) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          uris: [spotifyUri],
-          position_ms: position,
+          uris: [lick.spotifyUri],
+          position_ms: lick.position,
         })
       }
     );
@@ -42,7 +39,7 @@ const Lick = ({token, name, spotifyUri, position, duration} : Props) => {
   return(
     <div style={{ display: 'flex' }}>
       <button onClick={onPlay}>Play</button>
-      <p>{name}</p>
+      <p>{lick.name}</p>
     </div>
   );
 }

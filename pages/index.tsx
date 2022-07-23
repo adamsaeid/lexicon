@@ -42,14 +42,11 @@ const Home: NextPage = () => {
         getOAuthToken={getToken}
         connectOnInitialized={true}
       >
-        {licks.map(lick => (
+        {licks?.map(lick => (
           <Lick 
             key={lick.name}
             token={token!}
-            name={lick.name}
-            spotifyUri={lick.spotifyUri}
-            position={lick.position}
-            duration={lick.duration}
+            lick={lick}
           />
         ))}
       </WebPlaybackSDK>
