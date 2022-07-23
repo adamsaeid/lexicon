@@ -1,6 +1,6 @@
 interface Lick {
   name: string;
-  spotifyUri: string;
+  'spotify-uri': string;
   position: number;
   duration: number;
 }

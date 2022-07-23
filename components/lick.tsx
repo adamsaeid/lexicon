@@ -27,7 +27,7 @@ const Lick = ({token, lick} : Props) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          uris: [lick.spotifyUri],
+          uris: [lick["spotify-uri"]],
           position_ms: lick.position,
         })
       }
