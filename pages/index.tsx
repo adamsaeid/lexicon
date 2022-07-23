@@ -37,6 +37,8 @@ const Home: NextPage = () => {
         getOAuthToken={getToken}
         connectOnInitialized={true}
       >
+        <h1>Lexicon</h1>
+        <h2>All licks</h2>
         <Link href='/licks/new'>
           <button>Add new lick</button>
         </Link>

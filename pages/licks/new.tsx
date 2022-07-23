@@ -51,6 +51,8 @@ const Home: NextPage = () => {
         getOAuthToken={getToken}
         connectOnInitialized={true}
       >
+        <h1>Lexicon</h1>
+        <h2>New lick</h2>
         <Lick token={token} lick={lick} />
         <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '400px' }}>
           <div>
