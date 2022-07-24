@@ -9,6 +9,10 @@ const Lick = ({token, lick} : Props) => {
   const device = usePlayerDevice()
   const player = useSpotifyPlayer();
 
+  const onResume = async() => {
+    player?.resume();
+  };
+
   const onPlay = async () => {
     player?.addListener('player_state_changed', () => {
       player.removeListener('player_state_changed');
@@ -39,6 +43,7 @@ const Lick = ({token, lick} : Props) => {
   return(
     <div style={{ display: 'flex' }}>
       <button onClick={onPlay}>Play</button>
+      <button onClick={onResume}>Resume</button>
       <p>{lick.name}</p>
     </div>
   );
