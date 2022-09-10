@@ -54,23 +54,38 @@ const Home: NextPage = () => {
       <Container 
         className='app'
         maxWidth='xs'
-      >
+        >
         <Stack spacing={2} alignItems='center'>
-          <h1>Lexicon</h1>
-          <h2>New lick</h2>
+          <h1>New lick</h1>
+          <TextField
+            id="outlined-basic"
+            label="Name"
+            variant="outlined"
+            onChange={(event) => setName(event.target.value)}
+            fullWidth
+          />
+          <TextField
+            id="outlined-basic"
+            label="Spotify URI"
+            variant="outlined"
+            onChange={(event) => setSpotifyUri(event.target.value)}
+            fullWidth
+          />
+          <TextField
+            id="outlined-basic"
+            label="Position"
+            variant="outlined"
+            onChange={(event) => setPosition(event.target.value)}
+            fullWidth
+          />
+          <TextField
+            id="outlined-basic"
+            label="Duration"
+            variant="outlined"
+            onChange={(event) => setDuration(event.target.value)}
+            fullWidth
+          />
           <Lick token={token} lick={lick} />
-          <div>
-            <TextField id="outlined-basic" label="Name" variant="outlined" onChange={(event) => setName(event.target.value)} />
-          </div>
-          <div>
-            <TextField id="outlined-basic" label="Spotify URI" variant="outlined" onChange={(event) => setSpotifyUri(event.target.value)}/>
-          </div>
-          <div>
-            <TextField id="outlined-basic" label="Position" variant="outlined" onChange={(event) => setPosition(event.target.value)}/>
-          </div>
-          <div>
-            <TextField id="outlined-basic" label="Duration" variant="outlined" onChange={(event) => setDuration(event.target.value)}/>
-          </div>
           <button onClick={createLick}>Save</button>
           <SpotifyAuth
             redirectUri={`${process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}/licks/new`}
