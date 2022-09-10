@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import type { NextPage } from 'next';
+import { Container, Stack, TextField } from '@mui/material';
 import Cookies from 'js-cookie';
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
 import 'react-spotify-auth/dist/index.css'
@@ -43,45 +44,43 @@ const Home: NextPage = () => {
   })
 
   return (
-    <div className='app'>
-      {/* types provided by package are incorrect */}
-      {/* @ts-ignore */}
-      <WebPlaybackSDK
-        initialDeviceName="lexicon"
-        getOAuthToken={getToken}
-        connectOnInitialized={true}
+    /* types provided by package are incorrect */
+    /* @ts-ignore */
+    <WebPlaybackSDK
+      initialDeviceName="lexicon"
+      getOAuthToken={getToken}
+      connectOnInitialized={true}
+    >
+      <Container 
+        className='app'
+        maxWidth='xs'
       >
-        <h1>Lexicon</h1>
-        <h2>New lick</h2>
-        <Lick token={token} lick={lick} />
-        <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '400px' }}>
+        <Stack spacing={2} alignItems='center'>
+          <h1>Lexicon</h1>
+          <h2>New lick</h2>
+          <Lick token={token} lick={lick} />
           <div>
-            <label>Name: </label>
-            <input type="text" onChange={(event) => setName(event.target.value)}/>
+            <TextField id="outlined-basic" label="Name" variant="outlined" onChange={(event) => setName(event.target.value)} />
           </div>
           <div>
-            <label>Spotify URI: </label>
-            <input type="text" onChange={(event) => setSpotifyUri(event.target.value)}/>
+            <TextField id="outlined-basic" label="Spotify URI" variant="outlined" onChange={(event) => setSpotifyUri(event.target.value)}/>
           </div>
           <div>
-            <label>Position: </label>
-            <input type="text" onChange={(event) => setPosition(event.target.value)}/>
+            <TextField id="outlined-basic" label="Position" variant="outlined" onChange={(event) => setPosition(event.target.value)}/>
           </div>
           <div>
-            <label>Duration: </label>
-            <input type="text" onChange={(event) => setDuration(event.target.value)}/>
+            <TextField id="outlined-basic" label="Duration" variant="outlined" onChange={(event) => setDuration(event.target.value)}/>
           </div>
-        </div>
-        
-        <button onClick={createLick}>Save</button>
-      </WebPlaybackSDK>
-      <SpotifyAuth
-        redirectUri={`${process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}/licks/new`}
-        clientID={process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}
-        scopes={[Scopes.userReadPrivate, 'user-read-email', 'user-modify-playback-state', 'streaming']}
-        onAccessToken={(token: string) => setToken(token)}
-      />
-    </div>
+          <button onClick={createLick}>Save</button>
+          <SpotifyAuth
+            redirectUri={`${process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}/licks/new`}
+            clientID={process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}
+            scopes={[Scopes.userReadPrivate, 'user-read-email', 'user-modify-playback-state', 'streaming']}
+            onAccessToken={(token: string) => setToken(token)}
+          />
+        </Stack>
+      </Container>
+    </WebPlaybackSDK>
   )
 }
 
