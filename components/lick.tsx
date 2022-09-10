@@ -40,7 +40,7 @@ const Lick = ({ lick } : Props) => {
       }
     );
 
-    // player?.resume();
+    player?.resume();
   };
 
   return(
