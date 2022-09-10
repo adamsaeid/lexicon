@@ -12,6 +12,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.4",
     "install": "^0.13.0",
     "js-cookie": "^3.0.1",
     "kitsu": "^10.0.0-alpha.25",
