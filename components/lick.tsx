@@ -14,6 +14,7 @@ const Lick = ({ lick } : Props) => {
 
   const onResume = async() => {
     player?.activateElement();
+    player?.resume();
   };
 
   const onPlay = async () => {
