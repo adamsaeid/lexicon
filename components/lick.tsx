@@ -1,13 +1,17 @@
-import { usePlayerDevice, useSpotifyPlayer } from "react-spotify-web-playback-sdk";
+import { useEffect } from 'react';
+import { usePlayerDevice, useSpotifyPlayer } from 'react-spotify-web-playback-sdk';
+
+import { useAccessToken } from '../contexts/spotify';
 
 export interface Props {
-  token?: string;
   lick: Lick;
 }
 
-const Lick = ({token, lick} : Props) => {
+const Lick = ({ lick } : Props) => {
   const device = usePlayerDevice()
   const player = useSpotifyPlayer();
+
+  const token = useAccessToken();
 
   const onResume = async() => {
     player?.resume();
