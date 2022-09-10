@@ -1,18 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import type { NextPage } from 'next';
 import { Autocomplete, Container, Stack, TextField } from '@mui/material';
-import Cookies from 'js-cookie';
-import { SpotifyAuth, Scopes } from 'react-spotify-auth';
-import 'react-spotify-auth/dist/index.css'
-import { WebPlaybackSDK } from 'react-spotify-web-playback-sdk';
 import Kitsu from 'kitsu';
 
 import Lick from '../../components/lick';
+import { useAccessToken } from '../../contexts/spotify';
 
 const Home: NextPage = () => {
-  const [token, setToken] = useState(Cookies.get('spotifyAuthToken'));
-  const getToken = useCallback((callback: any) => callback(token), [token]);
+  const token = useAccessToken();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -90,84 +86,69 @@ const Home: NextPage = () => {
   })
   
   return (
-    /* types provided by package are incorrect */
-    /* @ts-ignore */
-    <WebPlaybackSDK
-      initialDeviceName='lexicon'
-      getOAuthToken={getToken}
-      connectOnInitialized={true}
-    >
-      <Container 
-        className='app'
-        maxWidth='xs'
-        >
-        <Stack spacing={2} alignItems='center'>
-          <h1>New lick</h1>
-          <Autocomplete
-            options={searchResults}
-            filterOptions={(x) => x} 
-            inputValue={searchQuery}
-            onChange={onSelectResult}
-            onInputChange={onQueryChange}
-            renderInput={(params) => {
-              return (
-                <TextField 
-                  {...params}
-                  id='search'
-                  label='Search'
-                  variant='outlined'
-                />
-              );
-            }}
-            renderOption={(props, option) => {
-              return (
-                <li {...props} key={option.uri}>
-                  {option.label}
-                </li>
-              );
-            }}
-            fullWidth
-            selectOnFocus
-            clearOnBlur
-          />
+    <Container 
+      className='app'
+      maxWidth='xs'
+      >
+      <Stack spacing={2} alignItems='center'>
+        <h1>New lick</h1>
+        <Autocomplete
+          options={searchResults}
+          filterOptions={(x) => x} 
+          inputValue={searchQuery}
+          onChange={onSelectResult}
+          onInputChange={onQueryChange}
+          renderInput={(params) => {
+            return (
+              <TextField 
+                {...params}
+                id='search'
+                label='Search'
+                variant='outlined'
+              />
+            );
+          }}
+          renderOption={(props, option) => {
+            return (
+              <li {...props} key={option.uri}>
+                {option.label}
+              </li>
+            );
+          }}
+          fullWidth
+          selectOnFocus
+          clearOnBlur
+        />
 
-          {spotifyUri && 
-            <>
-              <TextField
-                id='name'
-                label='Name'
-                variant='outlined'
-                onChange={(event) => setName(event.target.value)}
-                fullWidth
-              />
-              <TextField
-                id='position'
-                label='Position'
-                variant='outlined'
-                onChange={(event) => setPosition(event.target.value)}
-                fullWidth
-              />
-              <TextField
-                id='duration'
-                label='Duration'
-                variant='outlined'
-                onChange={(event) => setDuration(event.target.value)}
-                fullWidth
-              />
-              <Lick token={token} lick={lick} />
-              <button onClick={createLick}>Save</button>
-            </>
-          }
-          
-          <SpotifyAuth
-            redirectUri={`${process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}/licks/new`}
-            clientID={process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}
-            scopes={[Scopes.userReadPrivate, 'user-read-email', 'user-modify-playback-state', 'streaming']}
-            onAccessToken={(token: string) => setToken(token)}
-          />
-        </Stack>
-      </Container>
-    </WebPlaybackSDK>
+        {spotifyUri && 
+          <>
+            <TextField
+              id='name'
+              label='Name'
+              variant='outlined'
+              onChange={(event) => setName(event.target.value)}
+              fullWidth
+            />
+            <TextField
+              id='position'
+              label='Position'
+              variant='outlined'
+              onChange={(event) => setPosition(event.target.value)}
+              fullWidth
+            />
+            <TextField
+              id='duration'
+              label='Duration'
+              variant='outlined'
+              onChange={(event) => setDuration(event.target.value)}
+              fullWidth
+            />
+            <Lick lick={lick} />
+            <button onClick={createLick}>Save</button>
+          </>
+        }
+      </Stack>
+    </Container>
   )
 }
 

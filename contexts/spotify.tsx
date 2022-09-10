@@ -1,33 +1,58 @@
-import { createContext, useCallback, useContext, useState } from "react";
-import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
+// @ts-nocheck
+import { createContext, useContext, useEffect, useState } from "react";
 import { SpotifyAuth, Scopes } from 'react-spotify-auth';
 import 'react-spotify-auth/dist/index.css'
 import Cookies from 'js-cookie';
 
 const AccessTokenContext = createContext<string | undefined>(undefined);
+const SpotifyPlayerContext = createContext<any | undefined>(undefined);
+const SpotifyDeviceContext = createContext<any | undefined>(undefined);
 
 export const SpotifyProvider =  ({ children } : { children: any }) => {
   const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
-  const getToken = useCallback((callback: any) => callback(token), [token]);
+  const [player, setPlayer] = useState<any>(null);
+  const [device, setDevice] = useState<string>("");
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://sdk.scdn.co/spotify-player.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      if (token) {
+        const player = new window.Spotify.Player({
+            name: 'Web Playback SDK',
+            getOAuthToken: cb => { cb(token); },
+            volume: 0.5
+        });
+
+        setPlayer(player);
+
+        player.addListener('ready', ({ device_id }) => {
+            console.log('the device id is ', device_id)
+            setDevice(device_id);
+        });
+
+        player.addListener('not_ready', ({ device_id }) => {
+            console.log('Device ID has gone offline', device_id);
+        });
+
+
+        player.connect();
+      }
+
+    };
+}, [token]);
   
   return ( 
     <AccessTokenContext.Provider value={token}>
-      {
-        !token
-          ? <p>loading...</p>
-          : <>   
-            {/* types provided by package are incorrect */}
-            {/* @ts-ignore */}
-            <WebPlaybackSDK
-              initialDeviceName="lexicon"
-              getOAuthToken={getToken}
-              connectOnInitialized={true}
-            >
-              {children}
-            </WebPlaybackSDK>
-          </>
-      }
-
+      <SpotifyPlayerContext.Provider value={player}>
+        <SpotifyDeviceContext.Provider value={device}>
+          {children}
+        </SpotifyDeviceContext.Provider>
+      </SpotifyPlayerContext.Provider>
       <div style={{ marginTop: "30px" }}>
         <SpotifyAuth
           redirectUri={process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}
@@ -41,3 +66,5 @@ export const SpotifyProvider =  ({ children } : { children: any }) => {
 };
 
 export const useAccessToken = () => useContext(AccessTokenContext);
+export const useSpotifyPlayer = () => useContext(SpotifyPlayerContext);
+export const useSpotifyDevice = () => useContext(SpotifyDeviceContext);

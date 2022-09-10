@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { usePlayerDevice, useSpotifyPlayer } from 'react-spotify-web-playback-sdk';
+import { useSpotifyDevice, useSpotifyPlayer } from '../contexts/spotify';
 
 import { useAccessToken } from '../contexts/spotify';
 
@@ -8,13 +7,13 @@ export interface Props {
 }
 
 const Lick = ({ lick } : Props) => {
-  const device = usePlayerDevice()
   const player = useSpotifyPlayer();
+  const device = useSpotifyDevice();
 
   const token = useAccessToken();
 
   const onResume = async() => {
-    player?.resume();
+    player?.activateElement();
   };
 
   const onPlay = async () => {
@@ -26,7 +25,7 @@ const Lick = ({ lick } : Props) => {
     });
 
     await fetch(
-      `https://api.spotify.com/v1/me/player/play?device_id=${device?.device_id}`,
+      `https://api.spotify.com/v1/me/player/play?device_id=${device}`,
       {
         method: "PUT",
         headers: {
@@ -41,13 +40,13 @@ const Lick = ({ lick } : Props) => {
       }
     );
 
-    player?.resume();
+    // player?.resume();
   };
 
   return(
     <div style={{ display: 'flex' }}>
       <button onClick={onPlay}>Play</button>
-      <button onClick={onResume}>Resume</button>
+      <button onClick={onResume}>Activate</button>
       <p>{lick.name}</p>
     </div>
   );
