@@ -9,11 +9,13 @@ const SpotifyPlayerContext = createContext<any | undefined>(undefined);
 const SpotifyDeviceContext = createContext<any | undefined>(undefined);
 
 export const SpotifyProvider =  ({ children } : { children: any }) => {
-  const [token, setToken] = useState(Cookies.get("spotifyAuthToken"));
+  const [token, setToken] = useState("");
   const [player, setPlayer] = useState<any>(null);
   const [device, setDevice] = useState<string>("");
 
   useEffect(() => {
+    setToken(Cookies.get("spotifyAuthToken"));
+    
     const script = document.createElement("script");
     script.src = "https://sdk.scdn.co/spotify-player.js";
     script.async = true;
@@ -50,17 +52,19 @@ export const SpotifyProvider =  ({ children } : { children: any }) => {
     <AccessTokenContext.Provider value={token}>
       <SpotifyPlayerContext.Provider value={player}>
         <SpotifyDeviceContext.Provider value={device}>
-          {children}
+          { token
+            ? children 
+            : (
+              <SpotifyAuth
+                redirectUri={process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}
+                clientID={process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}
+                scopes={[Scopes.userReadPrivate, 'user-read-email', 'user-modify-playback-state', 'streaming']}
+                onAccessToken={(token: string) => setToken(token)}
+              />
+            )
+          }
         </SpotifyDeviceContext.Provider>
       </SpotifyPlayerContext.Provider>
-      <div style={{ marginTop: "30px" }}>
-        <SpotifyAuth
-          redirectUri={process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI}
-          clientID={process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}
-          scopes={[Scopes.userReadPrivate, 'user-read-email', 'user-modify-playback-state', 'streaming']}
-          onAccessToken={(token: string) => setToken(token)}
-        />
-      </div>
     </AccessTokenContext.Provider>
   )
 };

@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
-import Cookies from 'js-cookie';
 import Kitsu from 'kitsu';
 import Lick from "../components/lick";
 
